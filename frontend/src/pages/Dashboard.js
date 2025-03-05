@@ -25,10 +25,12 @@ const Dashboard = () => {
 
   return (
     <div>
+      <h1>Welcome to the Dashboard!</h1>
       <h2>Update Your Goals & Meal Schedule</h2>
       <input
         type="text"
         placeholder="Enter goal (e.g. Weight Loss)"
+        value={goals}
         onChange={(e) => setGoals(e.target.value)}
       />
       <button onClick={updateGoals}>Save Changes</button>
