@@ -1,37 +1,41 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { loginUser } from "../redux/userSlice";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import styles from "../styles/Auth.module.css"; // ✅ Import styles
 
-const Login = () => {
+const Register = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/users/login", {
+      await axios.post("http://localhost:5000/api/users/register", {
+        name,
         email,
         password,
       });
-      dispatch(loginUser(res.data.user));
-      localStorage.setItem("token", res.data.token);
-      alert("Login Successful");
-      navigate("/dashboard");
+      alert("Registration Successful. Please login.");
+      navigate("/login");
     } catch (err) {
-      alert("Invalid Credentials");
+      alert("Registration Failed. Try again.");
     }
   };
 
   return (
     <div className={styles["auth-container"]}>
       <div className={styles["auth-box"]}>
-        <h2>Login</h2>
-        <form onSubmit={handleLogin}>
+        <h2>Register</h2>
+        <form onSubmit={handleRegister}>
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
           <input
             type="email"
             placeholder="Email"
@@ -46,14 +50,14 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Login</button>
+          <button type="submit">Register</button>
         </form>
         <p>
-          Don't have an account? <a href="/register">Register</a>
+          Already have an account? <a href="/login">Login</a>
         </p>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;

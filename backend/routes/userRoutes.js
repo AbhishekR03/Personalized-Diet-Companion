@@ -1,27 +1,16 @@
 const express = require("express");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const {
+  register,
+  login,
+  forgotPassword,
+  updateGoals,
+} = require("../controllers/userController");
+const authenticateUser = require("../middleware/authMiddleware"); // Import JWT Middleware
 const router = express.Router();
 
-router.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = new User({ name, email, password: hashedPassword });
-  await user.save();
-  res.json({ message: "User registered successfully" });
-});
-
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (!user) return res.status(400).json({ message: "User not found" });
-
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
-
-  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
-  res.json({ token });
-});
+router.post("/register", register);
+router.post("/login", login);
+router.post("/forgot-password", forgotPassword);
+router.put("/update-goals", authenticateUser, updateGoals); // ✅ Protected route
 
 module.exports = router;
