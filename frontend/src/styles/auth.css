@@ -1,0 +1,94 @@
+/* General Page Styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: white;
+  color: black;
+  text-align: center;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Centered Home Page Container */
+.home-container {
+  text-align: center;
+}
+
+/* Home Page Buttons (Login & Register) */
+.home-container .auth-button {
+  width: 220px; /* Smaller width */
+  height: 50px;
+  font-size: 16px;
+  border-radius: 30px;
+  background-color: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin: 15px; /* Space between buttons */
+  transition: all 0.3s ease-in-out;
+}
+
+.home-container .auth-button:hover {
+  background-color: gray;
+}
+
+/* Centered Login & Register Pages */
+.auth-container {
+  width: 320px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  text-align: center;
+}
+
+/* Title Styling */
+.auth-container h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Buttons in Forms */
+.auth-container button {
+  width: 220px; /* Smaller buttons */
+  height: 50px;
+  font-size: 16px;
+  border-radius: 30px;
+  background-color: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  text-align: center;
+}
+
+.auth-container button:hover {
+  background-color: gray;
+  text-align: center;
+}
+
+/* Input Fields - Smaller & Shorter */
+.auth-container input {
+  width: 85%; /* Smaller width */
+  height: 40px; /* Shorter height */
+  font-size: 16px;
+  padding: 8px;
+  border: 2px solid black;
+  border-radius: 20px; /* Rounded corners */
+  background-color: white;
+  color: black;
+  margin-bottom: 12px; /* Space between fields */
+  transition: all 0.3s ease-in-out;
+  text-align: center;
+}
+
+/* Input turns black on focus */
+.auth-container input:focus {
+  background-color: black;
+  color: white;
+  outline: none;
+  text-align: center;
+}
