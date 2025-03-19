@@ -15,7 +15,7 @@ const Login = () => {
     // If successful, store token and redirect
 
     localStorage.setItem("token", "dummy-auth-token"); // Example token storage
-    navigate("/dashboard"); // Redirect to Dashboard
+    navigate("/basic-user-info"); // Redirect to Dashboard
   };
 
   return (
