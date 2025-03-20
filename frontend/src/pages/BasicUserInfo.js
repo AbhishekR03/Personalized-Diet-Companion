@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import "../styles/BasicUserInfo.css";
+import { useNavigate } from "react-router-dom"; // Import navigation hook
+import "../styles/BasicUserInfo.css"; // Import CSS
 
 export default function BasicUserInfo() {
+  const navigate = useNavigate(); // Initialize navigation
+
   const [formData, setFormData] = useState({
     fullName: "",
     dob: "",
@@ -17,10 +20,26 @@ export default function BasicUserInfo() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleCheckboxChange = (e) => {
+    const { name, value, checked } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: checked
+        ? [...prevData[name], value]
+        : prevData[name].filter((item) => item !== value),
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Ideally, save data to localStorage or state management (Redux)
+    navigate("/diet-goals"); // Navigate to Desired Diet Goals Page
+  };
+
   return (
     <div className="container">
       <h2 className="title">BASIC USER INFORMATION</h2>
-      <form className="form-container">
+      <form className="form-container" onSubmit={handleSubmit}>
         <div className="left-section">
           <div className="form-group">
             <label>
@@ -34,6 +53,7 @@ export default function BasicUserInfo() {
               required
             />
           </div>
+
           <div className="form-group">
             <label>
               <strong>Date of Birth:</strong>
@@ -46,6 +66,7 @@ export default function BasicUserInfo() {
               required
             />
           </div>
+
           <div className="form-group">
             <label>
               <strong>Gender:</strong>
@@ -62,6 +83,7 @@ export default function BasicUserInfo() {
               <option value="prefer-not">Prefer not to say</option>
             </select>
           </div>
+
           <div className="form-group">
             <label>
               <strong>Height (cm):</strong>
@@ -73,6 +95,7 @@ export default function BasicUserInfo() {
               onChange={handleChange}
             />
           </div>
+
           <div className="form-group">
             <label>
               <strong>Weight (kg):</strong>
@@ -114,6 +137,7 @@ export default function BasicUserInfo() {
                   type="checkbox"
                   name="dietaryRestrictions"
                   value="vegetarian"
+                  onChange={handleCheckboxChange}
                 />{" "}
                 Vegetarian
               </label>
@@ -122,6 +146,7 @@ export default function BasicUserInfo() {
                   type="checkbox"
                   name="dietaryRestrictions"
                   value="vegan"
+                  onChange={handleCheckboxChange}
                 />{" "}
                 Vegan
               </label>
@@ -130,6 +155,7 @@ export default function BasicUserInfo() {
                   type="checkbox"
                   name="dietaryRestrictions"
                   value="gluten-free"
+                  onChange={handleCheckboxChange}
                 />{" "}
                 Gluten-Free
               </label>
@@ -138,6 +164,7 @@ export default function BasicUserInfo() {
                   type="checkbox"
                   name="dietaryRestrictions"
                   value="keto"
+                  onChange={handleCheckboxChange}
                 />{" "}
                 Keto
               </label>
@@ -150,13 +177,30 @@ export default function BasicUserInfo() {
             </label>
             <div className="checkbox-group">
               <label>
-                <input type="checkbox" name="allergies" value="nuts" /> Nuts
+                <input
+                  type="checkbox"
+                  name="allergies"
+                  value="nuts"
+                  onChange={handleCheckboxChange}
+                />{" "}
+                Nuts
               </label>
               <label>
-                <input type="checkbox" name="allergies" value="dairy" /> Dairy
+                <input
+                  type="checkbox"
+                  name="allergies"
+                  value="dairy"
+                  onChange={handleCheckboxChange}
+                />{" "}
+                Dairy
               </label>
               <label>
-                <input type="checkbox" name="allergies" value="shellfish" />{" "}
+                <input
+                  type="checkbox"
+                  name="allergies"
+                  value="shellfish"
+                  onChange={handleCheckboxChange}
+                />{" "}
                 Shellfish
               </label>
             </div>
@@ -164,8 +208,8 @@ export default function BasicUserInfo() {
         </div>
       </form>
 
-      <button type="submit" className="submit-btn">
-        Submit
+      <button type="submit" className="submit-btn" onClick={handleSubmit}>
+        Next
       </button>
     </div>
   );
