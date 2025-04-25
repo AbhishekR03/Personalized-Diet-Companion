@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../redux/userSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import styles from "../styles/Auth.module.css"; // ✅ Import styles
+import "../styles/auth.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,7 +20,6 @@ const Login = () => {
       });
       dispatch(loginUser(res.data.user));
       localStorage.setItem("token", res.data.token);
-      alert("Login Successful");
       navigate("/dashboard");
     } catch (err) {
       alert("Invalid Credentials");
@@ -28,29 +27,50 @@ const Login = () => {
   };
 
   return (
-    <div className={styles["auth-container"]}>
-      <div className={styles["auth-box"]}>
-        <h2>Login</h2>
+    <div className="app-container">
+      <div className="card">
+        <div className="card-header">
+          <h1 className="app-title">Login</h1>
+          <p className="app-description">
+            Enter your credentials to access your account
+          </p>
+        </div>
         <form onSubmit={handleLogin}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button type="submit">Login</button>
+          <div className="card-content">
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                type="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="auth-input"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="auth-input"
+              />
+            </div>
+            <button type="submit" className="auth-button login-button">
+              Login
+            </button>
+            <div className="auth-footer">
+              Don't have an account?{" "}
+              <Link to="/register" className="auth-link">
+                Register
+              </Link>
+            </div>
+          </div>
         </form>
-        <p>
-          Don't have an account? <a href="/register">Register</a>
-        </p>
       </div>
     </div>
   );

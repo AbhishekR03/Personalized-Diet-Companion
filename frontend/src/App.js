@@ -3,7 +3,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import BasicUserInfo from "./pages/BasicUserInfo";
-import DesiredDietGoals from "./pages/DesiredDietGoals"; // <-- Import Here
+import DesiredDietGoals from "./pages/DesiredDietGoals";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -12,8 +13,8 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/basic-user-info" element={<BasicUserInfo />} />
-      <Route path="/diet-goals" element={<DesiredDietGoals />} />{" "}
-      {/* <-- Add Route */}
+      <Route path="/diet-goals" element={<DesiredDietGoals />} />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );
 }
