@@ -1,0 +1,91 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px; /* Adds space between each radio option */
+}
+
+.radio-option {
+  display: flex;
+  align-items: center; /* Aligns radio button and text in a straight line */
+  gap: 10px; /* Adds space between the radio button and text */
+  white-space: nowrap; /* Prevents text from wrapping into two lines */
+}
+
+.radio-option input {
+  margin-right: 10px;
+}
+
+/* Ensure Custom Goal input appears BELOW the radio button */
+.custom-goal-input {
+  width: 100%; /* Makes the input field take full width of the container */
+  padding: 8px; /* Adds padding for better spacing */
+  border: 1px solid black; /* Keeps consistent border style */
+  border-radius: 5px; /* Rounded corners to match other fields */
+  font-size: 16px; /* Matches text size with other inputs */
+  margin-top: 5px; /* Adds a small gap between radio button and input field */
+}
+
+/* Button Container */
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  width: 100%;
+}
+
+/* Back & Next Buttons Side by Side */
+.button-container {
+  display: flex;
+  justify-content: center; /* Align buttons in the center */
+  gap: 15px; /* Adds space between the buttons */
+  margin-top: 20px;
+  width: 100%;
+}
+
+.back-btn,
+.next-btn {
+  flex: 1; /* Makes both buttons take equal width */
+  max-width: 180px; /* Prevents them from becoming too wide */
+  height: 50px; /* Ensures equal height */
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.back-btn {
+  background-color: gray;
+  color: white;
+}
+
+.next-btn {
+  background-color: black;
+  color: white;
+}

@@ -32,28 +32,197 @@ const sendEmail = async (to, subject, text) => {
   await transporter.sendMail({ from: process.env.EMAIL, to, subject, text });
 };
 
-// Register User
+// Register user
 exports.register = async (req, res) => {
-  const { name, email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = new User({ name, email, password: hashedPassword });
-  await user.save();
-  res.json({ message: "User registered successfully" });
+  try {
+    const { email, password, fullName } = req.body;
+
+    // Check if user exists
+    let user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Create user
+    user = new User({
+      email,
+      password: hashedPassword,
+      fullName,
+    });
+
+    await user.save();
+
+    // Create token
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "24h",
+    });
+
+    res.status(201).json({
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        fullName: user.fullName,
+        registrationStep: user.registrationStep,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
-// Login User
+// Login user
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (!user) return res.status(400).json({ message: "User not found" });
+  try {
+    const { email, password } = req.body;
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
 
-  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-    expiresIn: "1h",
-  });
-  res.json({ token, user: { name: user.name, email: user.email } });
+    // Validate password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    // Create token
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "24h",
+    });
+
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        fullName: user.fullName,
+        registrationComplete: user.registrationComplete,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Update user profile
+exports.updateProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const updateData = req.body;
+
+    // Update user data
+    const user = await User.findByIdAndUpdate(
+      userId,
+      {
+        ...updateData,
+        registrationStep: updateData.registrationStep || 1,
+        registrationComplete: updateData.registrationComplete || false,
+      },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      user: {
+        id: user._id,
+        email: user.email,
+        fullName: user.fullName,
+        registrationComplete: user.registrationComplete,
+        ...updateData,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Get user profile
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Update Registration Step
+exports.updateRegistrationStep = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const { stepData, step } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update user data based on the current step
+    switch (step) {
+      case 2:
+        user.personalInfo = { ...user.personalInfo, ...stepData };
+        break;
+      case 3:
+        user.goals = { ...user.goals, ...stepData };
+        break;
+      default:
+        break;
+    }
+
+    // Update registration progress
+    user.registrationStep = step + 1;
+    if (step === 3) {
+      user.registrationComplete = true;
+    }
+
+    await user.save();
+
+    res.json({
+      message: "Registration step updated",
+      currentStep: user.registrationStep,
+      isComplete: user.registrationComplete,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// Get Registration Progress
+exports.getRegistrationProgress = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      currentStep: user.registrationStep,
+      isComplete: user.registrationComplete,
+      personalInfo: user.personalInfo,
+      goals: user.goals,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
 };
 
 // Forgot Password
