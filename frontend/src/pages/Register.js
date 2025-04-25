@@ -11,7 +11,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     console.log("Registering with:", name, email, password);
-    navigate("/login");
+    navigate("/basic-user-info");
   };
 
   return (
