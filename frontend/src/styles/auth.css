@@ -1,24 +1,270 @@
+@import "./common.css";
+
 /* General Page Styling */
 body {
-  font-family: Arial, sans-serif;
-  background-color: white;
-  color: black;
-  text-align: center;
   margin: 0;
-  height: 100vh;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: #f5f5f5;
+  color: #000;
+  font-weight: 500;
+}
+
+.flex {
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.1),
+    rgba(0, 0, 0, 0.1)
+  );
+}
+
+/* Card Styling */
+.card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Home page specific styles */
+.home-title {
+  font-size: 4.5rem;
+  font-weight: 900;
+  margin-bottom: 1.5rem;
+  color: var(--color-text);
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+}
+
+/* Regular app title (for login, register, etc) */
+.app-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--color-text);
+}
+
+.app-description {
+  color: var(--color-text-secondary);
+  margin: 0 0 1.5rem 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+/* Home page specific description */
+.home-container .app-description {
+  font-size: var(--font-size-lg);
+  margin-bottom: 3.5rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Progress Bar */
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background-color: var(--color-border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: var(--spacing-xl) 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--color-primary);
+  transition: width 0.3s ease;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Form Styling */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-bottom: 1rem;
+}
+
+label {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-semibold);
+  margin-bottom: var(--spacing-xs);
+}
+
+.auth-input {
+  width: 100%;
+  padding: var(--spacing-md);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-md);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.auth-input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+/* Button Group */
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Button Styling */
+.auth-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  text-align: center;
+  width: 200px;
+  margin: 1rem auto;
+  display: block;
+}
+
+.login-button {
+  background-color: #18181b;
+  color: white;
+  border: none;
+}
+
+.register-button {
+  background-color: transparent;
+  color: #000;
+  border: 1px solid #e5e7eb;
+}
+
+.login-button:hover {
+  background-color: #000;
+}
+
+.register-button:hover {
+  background-color: #f8f9fa;
+}
+
+/* Footer Styling */
+.auth-footer {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.95rem;
+  margin-top: 1.5rem;
+  font-weight: 600;
+}
+
+.auth-link {
+  color: #000;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.auth-link:hover {
+  opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .card {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .home-title {
+    font-size: 3.5rem;
+  }
+
+  .app-title {
+    font-size: 1.75rem;
+  }
+
+  /* Home page specific mobile styles */
+  .home-container .app-title {
+    font-size: var(--font-size-5xl);
+  }
+
+  .home-container .app-description {
+    font-size: var(--font-size-md);
+    margin-bottom: 2.5rem;
+    padding: 0 1rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
 }
 
 /* Centered Home Page Container */
 .home-container {
   text-align: center;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.home-container .app-title {
+  font-size: var(--font-size-6xl) !important;
+  font-weight: 900 !important;
+  margin-bottom: 1.5rem;
+  color: var(--color-text);
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+}
+
+.home-container .app-description {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  margin-bottom: 3.5rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Home Page Button Container */
+.home-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0 1rem;
 }
 
 /* Home Page Buttons (Login & Register) */
 .home-container .auth-button {
-  width: 220px; /* Smaller width */
+  width: 100%;
+  max-width: 200px;
   height: 50px;
   font-size: 16px;
   border-radius: 30px;
@@ -26,12 +272,22 @@ body {
   color: white;
   border: none;
   cursor: pointer;
-  margin: 15px; /* Space between buttons */
   transition: all 0.3s ease-in-out;
+  margin: 0;
+}
+
+.home-container .register-button {
+  background-color: transparent;
+  border: 2px solid black;
+  color: black;
 }
 
 .home-container .auth-button:hover {
-  background-color: gray;
+  background-color: #333;
+}
+
+.home-container .register-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 /* Centered Login & Register Pages */
@@ -91,4 +347,88 @@ body {
   color: white;
   outline: none;
   text-align: center;
+}
+
+/* FormStep Component Styling */
+.form-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-step-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.form-step-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 0.5rem;
+}
+
+.form-step-description {
+  color: #6b7280;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.form-step-content {
+  flex: 1;
+  min-height: 200px;
+}
+
+.form-step-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.step-button {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-button {
+  background-color: transparent;
+  color: #000;
+  border: 1px solid #e5e7eb;
+}
+
+.next-button {
+  background-color: #000;
+  color: white;
+  border: none;
+  width: 200px;
+  margin: 1rem auto;
+  display: block;
+}
+
+.back-button:hover {
+  background-color: #f8f9fa;
+}
+
+.next-button:hover {
+  background-color: #18181b;
+}
+
+/* Progress Bar Refinements */
+.progress-container {
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+.progress-text {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
 }

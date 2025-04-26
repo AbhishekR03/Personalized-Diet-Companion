@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../styles/auth.css";
 
 const Login = () => {
@@ -9,38 +9,59 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     console.log("Logging in with:", email, password);
     // Perform login authentication here (e.g., API call)
     // If successful, store token and redirect
-
-    localStorage.setItem("token", "dummy-auth-token"); // Example token storage
-    navigate("/basic-user-info"); // Redirect to Dashboard
+    localStorage.setItem("token", "dummy-auth-token");
+    navigate("/dashboard");
   };
 
   return (
-    <div className="auth-container">
-      <h2>Sign In</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
-      <p>
-        Don't have an account? <a href="/register">Sign up</a>
-      </p>
+    <div className="flex">
+      <div className="card">
+        <div className="card-header">
+          <h1 className="app-title">Login</h1>
+          <p className="app-description">
+            Enter your credentials to access your account
+          </p>
+        </div>
+        <form onSubmit={handleLogin}>
+          <div className="card-content">
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                type="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="auth-input"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="auth-input"
+              />
+            </div>
+            <button type="submit" className="auth-button login-button">
+              Login
+            </button>
+            <div className="auth-footer">
+              Don't have an account?{" "}
+              <Link to="/register" className="auth-link">
+                Register
+              </Link>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

@@ -5,16 +5,30 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="home-container">
-      <h1 className="project-title">Personalized Diet Companion</h1>
-      <p>Your AI-powered meal planning and diet tracking assistant.</p>
-      <div className="button-group">
-        <button className="auth-button" onClick={() => navigate("/login")}>
-          Login
-        </button>
-        <button className="auth-button" onClick={() => navigate("/register")}>
-          Register
-        </button>
+    <div className="flex">
+      <div className="card">
+        <div className="card-header">
+          <h1 className="home-title">NutriTrack</h1>
+          <p className="app-description">
+            Your personalized nutrition and diet planning assistant
+          </p>
+        </div>
+        <div className="card-content">
+          <div className="home-buttons">
+            <button
+              className="auth-button login-button"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </button>
+            <button
+              className="auth-button register-button"
+              onClick={() => navigate("/register")}
+            >
+              Register
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

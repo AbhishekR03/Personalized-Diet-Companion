@@ -1,9 +1,25 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import navigation hook
-import "../styles/BasicUserInfo.css"; // Import CSS
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import "../styles/BasicUserInfo.css";
+
+const allergiesList = [
+  { id: "peanuts", label: "Peanuts" },
+  { id: "dairy", label: "Dairy" },
+  { id: "shellfish", label: "Shellfish" },
+  { id: "gluten", label: "Gluten" },
+];
+
+const dietaryRestrictionsList = [
+  { id: "vegetarian", label: "Vegetarian" },
+  { id: "vegan", label: "Vegan" },
+  { id: "keto", label: "Keto" },
+  { id: "paleo", label: "Paleo" },
+];
 
 export default function BasicUserInfo() {
-  const navigate = useNavigate(); // Initialize navigation
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isEditMode = location.state?.isEdit;
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -16,201 +32,223 @@ export default function BasicUserInfo() {
     allergies: [],
   });
 
+  useEffect(() => {
+    // Get the stored registration data
+    const storedData = localStorage.getItem("registrationData");
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      setFormData((prev) => ({
+        ...prev,
+        ...parsedData,
+      }));
+    }
+  }, []);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleCheckboxChange = (e) => {
-    const { name, value, checked } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: checked
-        ? [...prevData[name], value]
-        : prevData[name].filter((item) => item !== value),
+  const handleCheckboxChange = (category, id, checked) => {
+    setFormData((prev) => ({
+      ...prev,
+      [category]: checked
+        ? [...prev[category], id]
+        : prev[category].filter((item) => item !== id),
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Ideally, save data to localStorage or state management (Redux)
-    navigate("/diet-goals"); // Navigate to Desired Diet Goals Page
+    // Store updated user data
+    localStorage.setItem("registrationData", JSON.stringify(formData));
+
+    // Navigate based on mode
+    if (isEditMode) {
+      navigate("/dashboard");
+    } else {
+      navigate("/diet-goals");
+    }
+  };
+
+  const handleBack = () => {
+    if (isEditMode) {
+      navigate("/dashboard");
+    } else {
+      navigate("/register");
+    }
   };
 
   return (
-    <div className="container">
-      <h2 className="title">BASIC USER INFORMATION</h2>
-      <form className="form-container" onSubmit={handleSubmit}>
-        <div className="left-section">
-          <div className="form-group">
-            <label>
-              <strong>Full Name:</strong>
-            </label>
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>
-              <strong>Date of Birth:</strong>
-            </label>
-            <input
-              type="date"
-              name="dob"
-              value={formData.dob}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>
-              <strong>Gender:</strong>
-            </label>
-            <select
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-            >
-              <option value="">Select</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-              <option value="prefer-not">Prefer not to say</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label>
-              <strong>Height (cm):</strong>
-            </label>
-            <input
-              type="number"
-              name="height"
-              value={formData.height}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>
-              <strong>Weight (kg):</strong>
-            </label>
-            <input
-              type="number"
-              name="weight"
-              value={formData.weight}
-              onChange={handleChange}
-            />
-          </div>
+    <div className="flex">
+      <div className="card">
+        <div className="card-header">
+          <h1 className="app-title">Basic User Information</h1>
+          <p className="app-description">
+            Please provide your personal details
+          </p>
+          {!isEditMode && (
+            <div className="progress-bar">
+              <div className="progress-fill" style={{ width: "66.66%" }}></div>
+            </div>
+          )}
         </div>
+        <form onSubmit={handleSubmit}>
+          <div className="card-content">
+            <div className="form-group">
+              <label htmlFor="fullName">Full Name</label>
+              <input
+                id="fullName"
+                name="fullName"
+                type="text"
+                className="auth-input"
+                placeholder="Enter your full name"
+                value={formData.fullName}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-        <div className="right-section">
-          <div className="form-group">
-            <label>
-              <strong>Activity Level:</strong>
-            </label>
-            <select
-              name="activityLevel"
-              value={formData.activityLevel}
-              onChange={handleChange}
-            >
-              <option value="">Select</option>
-              <option value="sedentary">Sedentary</option>
-              <option value="lightly-active">Lightly Active</option>
-              <option value="active">Active</option>
-              <option value="very-active">Very Active</option>
-            </select>
-          </div>
+            <div className="form-group">
+              <label htmlFor="dob">Date of Birth</label>
+              <input
+                id="dob"
+                name="dob"
+                type="date"
+                className="auth-input"
+                value={formData.dob}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-          <div className="form-group">
-            <label>
-              <strong>Dietary Restrictions:</strong>
-            </label>
-            <div className="checkbox-group">
-              <label>
+            <div className="form-group">
+              <label htmlFor="gender">Gender</label>
+              <select
+                id="gender"
+                name="gender"
+                className="auth-input"
+                value={formData.gender}
+                onChange={handleChange}
+              >
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="height">Height (cm)</label>
                 <input
-                  type="checkbox"
-                  name="dietaryRestrictions"
-                  value="vegetarian"
-                  onChange={handleCheckboxChange}
-                />{" "}
-                Vegetarian
-              </label>
-              <label>
+                  id="height"
+                  name="height"
+                  type="number"
+                  className="auth-input"
+                  placeholder="Height in cm"
+                  value={formData.height}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="weight">Weight (kg)</label>
                 <input
-                  type="checkbox"
-                  name="dietaryRestrictions"
-                  value="vegan"
-                  onChange={handleCheckboxChange}
-                />{" "}
-                Vegan
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  name="dietaryRestrictions"
-                  value="gluten-free"
-                  onChange={handleCheckboxChange}
-                />{" "}
-                Gluten-Free
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  name="dietaryRestrictions"
-                  value="keto"
-                  onChange={handleCheckboxChange}
-                />{" "}
-                Keto
-              </label>
+                  id="weight"
+                  name="weight"
+                  type="number"
+                  className="auth-input"
+                  placeholder="Weight in kg"
+                  value={formData.weight}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="activityLevel">Activity Level</label>
+              <select
+                id="activityLevel"
+                name="activityLevel"
+                className="auth-input"
+                value={formData.activityLevel}
+                onChange={handleChange}
+              >
+                <option value="">Select activity level</option>
+                <option value="sedentary">
+                  Sedentary (little or no exercise)
+                </option>
+                <option value="light">Light (exercise 1-3 days/week)</option>
+                <option value="moderate">
+                  Moderate (exercise 3-5 days/week)
+                </option>
+                <option value="active">Active (exercise 6-7 days/week)</option>
+                <option value="veryActive">
+                  Very Active (intense exercise daily)
+                </option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>Allergies</label>
+              <div className="checkbox-grid">
+                {allergiesList.map((item) => (
+                  <div key={item.id} className="checkbox-item">
+                    <input
+                      type="checkbox"
+                      id={`allergy-${item.id}`}
+                      checked={formData.allergies.includes(item.id)}
+                      onChange={(e) =>
+                        handleCheckboxChange(
+                          "allergies",
+                          item.id,
+                          e.target.checked
+                        )
+                      }
+                    />
+                    <label htmlFor={`allergy-${item.id}`}>{item.label}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Dietary Restrictions</label>
+              <div className="checkbox-grid">
+                {dietaryRestrictionsList.map((item) => (
+                  <div key={item.id} className="checkbox-item">
+                    <input
+                      type="checkbox"
+                      id={`diet-${item.id}`}
+                      checked={formData.dietaryRestrictions.includes(item.id)}
+                      onChange={(e) =>
+                        handleCheckboxChange(
+                          "dietaryRestrictions",
+                          item.id,
+                          e.target.checked
+                        )
+                      }
+                    />
+                    <label htmlFor={`diet-${item.id}`}>{item.label}</label>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-
-          <div className="form-group">
-            <label>
-              <strong>Allergies:</strong>
-            </label>
-            <div className="checkbox-group">
-              <label>
-                <input
-                  type="checkbox"
-                  name="allergies"
-                  value="nuts"
-                  onChange={handleCheckboxChange}
-                />{" "}
-                Nuts
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  name="allergies"
-                  value="dairy"
-                  onChange={handleCheckboxChange}
-                />{" "}
-                Dairy
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  name="allergies"
-                  value="shellfish"
-                  onChange={handleCheckboxChange}
-                />{" "}
-                Shellfish
-              </label>
-            </div>
+          <div className="button-group">
+            <button
+              type="button"
+              onClick={handleBack}
+              className="auth-button register-button"
+            >
+              {isEditMode ? "Cancel" : "Back"}
+            </button>
+            <button type="submit" className="auth-button login-button">
+              {isEditMode ? "Save Changes" : "Next"}
+            </button>
           </div>
-        </div>
-      </form>
-
-      <button type="submit" className="submit-btn" onClick={handleSubmit}>
-        Next
-      </button>
+        </form>
+      </div>
     </div>
   );
 }

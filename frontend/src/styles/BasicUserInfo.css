@@ -1,74 +1,229 @@
-.container {
-  padding-top: 180px;
-  padding-bottom: 50px;
-  text-align: center;
-}
+@import "./common.css";
 
-.title {
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  text-align: center;
-  display: block;
-  width: 100%;
-  white-space: nowrap;
-  overflow: visible;
-}
-
-.form-grid {
+/* Reuse existing auth.css styles for consistency */
+.flex {
+  min-height: 100vh;
   display: flex;
-  justify-content: space-between;
-  gap: 40px;
-  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.1),
+    rgba(0, 0, 0, 0.1)
+  );
 }
 
-.form-column {
-  width: 48%;
+.card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 3rem;
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.app-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-bold);
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-text);
+}
+
+.app-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-lg);
+  line-height: var(--line-height-normal);
+}
+
+/* Progress Bar */
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background-color: var(--color-border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: var(--spacing-xl) 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--color-primary);
+  transition: width 0.3s ease;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Form Styling */
+.form-container {
+  max-width: var(--container-sm);
+  margin: 0 auto;
+  padding: var(--spacing-lg);
 }
 
 .form-group {
-  margin-bottom: 15px;
-  text-align: left;
+  margin-bottom: var(--spacing-md);
 }
 
-input,
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  width: 100%;
+}
+
+.form-row > * {
+  width: 100%;
+}
+
+label {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-semibold);
+  margin-bottom: var(--spacing-xs);
+}
+
+.auth-input,
 select {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 14px;
+  padding: var(--spacing-md);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-md);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
-.checkbox-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px; /* Adds space between checkboxes */
+.auth-input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
 }
 
-.checkbox-group label {
+.auth-input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+/* Checkbox Styling */
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-sm);
+  margin: var(--spacing-sm) 0;
+}
+
+.checkbox-item {
   display: flex;
   align-items: center;
-  gap: 8px; /* Adds space between the checkbox and label text */
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
 }
 
-.checkbox-group input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-}
-
-.submit-btn {
-  width: 100%;
-  background: black;
-  color: white;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
+.checkbox-item input[type="checkbox"] {
+  width: var(--spacing-md);
+  height: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--color-border);
   cursor: pointer;
-  margin-top: 20px;
 }
 
-.next-btn {
-  margin-bottom: 20px; /* Adjust this if needed */
+/* Button Group */
+.button-group {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-xl);
+  gap: var(--spacing-md);
+}
+
+.auth-button {
+  padding: var(--spacing-sm) var(--spacing-xl);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-semibold);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 200px;
+  margin: 0 auto;
+}
+
+.next-button {
+  width: 200px;
+  margin: 1rem auto;
+  display: block;
+  padding: var(--spacing-sm) var(--spacing-xl);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-semibold);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+}
+
+.login-button {
+  background-color: #007aff;
+  color: var(--color-white);
+  border: none;
+}
+
+.register-button {
+  background-color: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.login-button:hover,
+.register-button:hover {
+  opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card {
+    margin: 1rem;
+    padding: 2rem;
+  }
+
+  .form-container {
+    padding: var(--spacing-sm);
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .auth-button {
+    max-width: 100%;
+  }
+
+  .app-title {
+    font-size: var(--font-size-lg);
+    text-align: center;
+  }
+
+  .app-description {
+    text-align: center;
+  }
 }
