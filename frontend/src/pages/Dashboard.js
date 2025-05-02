@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronDown, User, Target, Utensils, FileText } from "lucide-react";
+import {
+  ChevronDown,
+  User,
+  Target,
+  Utensils,
+  FileText,
+  Loader2,
+} from "lucide-react";
 import "../styles/Dashboard.css";
+import axios from "axios";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState("personal");
   const [userData, setUserData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Check if user is authenticated
@@ -17,12 +26,64 @@ const Dashboard = () => {
     }
 
     // Load data from localStorage
-    const loadUserData = () => {
-      try {
-        // Get user data from registration process
-        const registrationData =
-          JSON.parse(localStorage.getItem("registrationData")) || {};
+    const loadUserData = async () => {
+      // Get user data from registration process
+      const registrationData =
+        JSON.parse(localStorage.getItem("registrationData")) || {};
+      console.log("Registration data:", registrationData);
 
+      try {
+        // Fetch personalized diet plan from backend
+        console.log("Calling backend API...");
+        const response = await axios.post(
+          "http://localhost:5000/api/meals/generate-diet-plan",
+          registrationData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("Backend API response:", response.data);
+        const dietPlan = response.data;
+
+        if (!dietPlan) {
+          throw new Error("No diet plan received from backend");
+        }
+
+        setUserData({
+          personalInfo: {
+            fullName: registrationData.fullName || "",
+            email: registrationData.email || "",
+            dateOfBirth: registrationData.dob || "",
+            gender: registrationData.gender || "",
+            height: registrationData.height || "",
+            weight: registrationData.weight || "",
+            activityLevel: registrationData.activityLevel || "",
+            allergies: registrationData.allergies || [],
+            dietaryRestrictions: registrationData.dietaryRestrictions || [],
+          },
+          dietGoals: {
+            weightGoal: registrationData.dietGoals || [],
+            targetWeight: registrationData.targetWeight || "",
+            weeklyGoal: registrationData.weeklyGoal || "",
+            activityLevel: registrationData.activityLevel || "",
+            dietaryRestrictions: registrationData.dietaryRestrictions || [],
+            healthConditions: registrationData.healthConditions || [],
+            supplementPreferences: registrationData.supplementPreferences || [],
+            mealPreferences: registrationData.mealPreferences || {},
+            budget: registrationData.budget || "",
+          },
+          cuisinePreferences: registrationData.cuisinePreferences || [],
+          personalizedPlan: dietPlan,
+        });
+      } catch (error) {
+        console.error("Error loading user data:", error);
+        console.error("Error details:", error.response?.data || error.message);
+        // Show error to user
+        alert("Failed to generate diet plan. Please try again later.");
+        // Set default values if API call fails
         setUserData({
           personalInfo: {
             fullName: registrationData.fullName || "",
@@ -95,8 +156,8 @@ const Dashboard = () => {
             },
           },
         });
-      } catch (error) {
-        console.error("Error loading user data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -122,6 +183,15 @@ const Dashboard = () => {
         break;
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="loading-container">
+        <Loader2 className="loading-spinner" />
+        <p>Loading your personalized diet plan...</p>
+      </div>
+    );
+  }
 
   if (!userData) return <div className="loading">Loading...</div>;
 

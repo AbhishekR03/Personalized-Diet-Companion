@@ -564,7 +564,15 @@
 .meal-card p {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
-  line-height: 1.3;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+/* Add spacing between sentences */
+.meal-card p::after {
+  content: "";
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
 .shopping-list {
@@ -799,4 +807,34 @@
   .macro-percentage {
     font-size: var(--font-size-lg);
   }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 1rem;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  color: var(--color-primary);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-container p {
+  font-size: 1.1rem;
+  color: var(--color-text-secondary);
 }
