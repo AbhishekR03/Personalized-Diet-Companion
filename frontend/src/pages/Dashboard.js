@@ -36,7 +36,7 @@ const Dashboard = () => {
         // Fetch personalized diet plan from backend
         console.log("Calling backend API...");
         const response = await axios.post(
-          "http://localhost:5000/api/meals/generate-diet-plan",
+          `${process.env.REACT_APP_API_URL}/meals/generate-diet-plan`,
           registrationData,
           {
             headers: {

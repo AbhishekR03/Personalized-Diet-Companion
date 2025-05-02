@@ -5,7 +5,7 @@ const GoogleLoginButton = () => {
   const handleLoginSuccess = async (response) => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/users/google-oauth",
+        `${process.env.REACT_APP_API_URL}/users/google-oauth`,
         { token: response.credential }
       );
       localStorage.setItem("token", res.data.token);

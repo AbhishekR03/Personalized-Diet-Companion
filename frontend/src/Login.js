@@ -14,10 +14,13 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/users/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/users/login`,
+        {
+          email,
+          password,
+        }
+      );
       dispatch(loginUser(res.data.user));
       localStorage.setItem("token", res.data.token);
       navigate("/dashboard");
