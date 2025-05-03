@@ -238,7 +238,7 @@ exports.forgotPassword = async (req, res) => {
   user.resetTokenExpiry = Date.now() + 15 * 60 * 1000;
   await user.save();
 
-  const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+  const resetUrl = `https://nutritrackpdc.netlify.app/reset-password/${resetToken}`;
   await sendEmail(
     email,
     "Password Reset",

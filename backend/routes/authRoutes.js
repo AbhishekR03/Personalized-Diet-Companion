@@ -13,8 +13,8 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:3000/login",
-    successRedirect: "http://localhost:3000/dashboard",
+    failureRedirect: "https://nutritrackpdc.netlify.app/login",
+    successRedirect: "https://nutritrackpdc.netlify.app/dashboard",
   })
 );
 
